@@ -6,8 +6,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/GroupBuilder/internal/database"
-	"github.com/GroupBuilder/internal/models"
+	"github.com/diederiknl/GroupBuilder/internal/database"
+	"github.com/diederiknl/GroupBuilder/internal/models"
 )
 
 func ImportStudentList(db *database.DB) http.HandlerFunc {
