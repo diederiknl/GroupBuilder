@@ -1,0 +1,5 @@
+# Contact Information
+Contact: mailto:security@diederik.nl
+
+# Preferred Languages
+Preferred-Languages: nl, en
