@@ -1,0 +1,26 @@
+Ik wil graag een applicatie maken. Deze applicatie heeft een frontend voor studenten en een backend voor docenten.
+
+De applicatie moet aan de backend:
+
+* Studentenlijsten in kunnnen lezen
+
+Een student:
+
+* Zit in een klas (1A-1E)
+* Zit in één groep
+* Een groep zit in 1 klas
+* Een groep heeft een naam
+* Er draaien 4 projecten per jaar
+* Een team kan aan één project meedoen
+* Een student kan maar in 1 team zitten per periode
+
+Ik wil een applicatie hebben die:
+
+* Studentenlijsten  kan inlezen
+* Feedback van studenten kan krijgen over hun huidige groepsindeling. Vinden ze het prettig werken met studenten? Of willen ze een andere groep? Dit moet gevraagd worden aan de frontend
+* Een ideale groepsindeling voor kan stellen aan de hand van de wensen van studenten, maar ik wil als docent studenten kunnen "Pinnen". Oftwel: studenten mogen níet samenwerken met andere studenten of juist wel.
+
+Qua applicatie: ik wil graag een applicatie in GO hebben, met CHI als webapplicatie. Ik denk dat SQLite de mooiste database is, al is PostgreSQL een mooie tweede.
+
+Qua authenticatie: ik wil dat studenten in kunnen loggen met email. Dwz: via een link op hun studentenemail kan ze naar het login systeem brengen. Dit kan ook gedaan worden door de website te bezoeken vanuit een andere computer dan waarop de website zich bevindt.
+Voor docenten wil ik graag username en password hebben
