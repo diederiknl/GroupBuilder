@@ -3,3 +3,7 @@ Contact: mailto:security@diederik.nl
 
 # Preferred Languages
 Preferred-Languages: nl, en
+
+# Encryption
+Encryption: https://diederik.nl/.well-known/diederiknl.asc
+
