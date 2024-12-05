@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
 # Contact Information
 Contact: mailto:security@diederik.nl
 
@@ -7,3 +10,19 @@ Preferred-Languages: nl, en
 # Encryption
 Encryption: https://diederik.nl/.well-known/diederiknl.asc
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEErGnp5Sn0VXyaQWu1iJMUS6bVXvEFAmdNvsIACgkQiJMUS6bV
+XvHWEA//Uck2mQwtqZHS+/mrDYqSPN8TwTV4OoEE8L01UsviXZhC7ziFiuUEZzBE
+CEfgsNU/PORDyQB/hiX1haok/69y7bnXGurLyQ4oU9G9N7tCU+VXg5Qd3I1I/i9X
+7julZjq9UdpHZURMIQ3hpUnDHTaCuME3spHpOiyk46BsXQzPl97GT87pgznS2889
+csMnxRwLvtx52WR5G+EagcuKt2dyrkh8SIxgvJBIarj+4o5tzjNPAV9N/E+Dib0G
+9+5SusGUlt0FD2/rNrLUtD5xb3zRJIaHQZ0f1nAn09qdutP6qhoEbUecEkzLc0Rc
+T0RTZBOw7wbIUdffBaSSYVFydZwOiF4evtLspbEjjBke/eY3KYFJi2eNkTmC5ctU
+9u/bSUFvrtFdx0AGjUfFiyLFKYOyDJ9mgKXKZvNHEnezNWjUFvTWPBM/C6aPgoRY
+TJmhRk2P770YGH18bVaxoLUtkNg+3oBwFcqhDAVTyinT+qW0+F6+8Pal99EbxpM4
+LM0oEKscFbxDILhq4eEILyz8eoMXHcpy7opI0Oc1ljNayK+tRvVu31h3F4rZjyFG
+Nes+WBkoyFVdszoX6yyuuB43Bn84yG0WnOuTYpNqHQ1w0bdll/nQuGSwxPZtyHCA
+y63wdDMAUBPPeR8QkphPOf+TSlR/u17Rj1DnX3M+u5iGe52Gfl0=
+=JwFC
+-----END PGP SIGNATURE-----
