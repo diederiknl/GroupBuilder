@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"context"
+	"database/sql"
 	"log"
 	"net/http"
 
@@ -9,20 +9,24 @@ import (
 	"GroupBuilder/internal/routes"
 )
 
-// I know this key should not be here. No problem for now...
 var jwtKey = []byte("neinneinnein")
 
 func main() {
-	// Initialize database
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
 
-	// Setup routes
+		}
+	}(db)
+
 	r := routes.SetupRoutes(db)
 
 	log.Println("Starting server on :8080")
-	http.ListenAndServe(":8080", r)
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		log.Fatal(err)
+	}
 }
