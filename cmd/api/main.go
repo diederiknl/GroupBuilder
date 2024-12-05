@@ -5,8 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/diederiknl/GroupBuilder/internal/database"
-	"github.com/diederiknl/GroupBuilder/internal/routes"
+	"GroupBuilder/internal/auth"
+	"GroupBuilder/internal/database"
+	"GroupBuilder/internal/routes"
 )
 
 func main() {

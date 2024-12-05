@@ -1,43 +1,39 @@
 package auth
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
+	"github.com/golang-jwt/jwt"
 )
 
-type LoginLink struct {
-	Token     string
-	ExpiresAt time.Time
+var jwtKey = []byte("your_secret_key")
+
+type Claims struct {
+	Email string `json:"email"`
+	Role  string `json:"role"`
+	jwt.StandardClaims
 }
 
-func GenerateLoginLink(email string) (LoginLink, error) {
-	token := make([]byte, 32)
-	_, err := rand.Read(token)
-	if err != nil {
-		return LoginLink{}, err
+func GenerateToken(email string, role string) (string, error) {
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &Claims{
+		Email: email,
+		Role:  role,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
 	}
-
-	return LoginLink{
-		Token:     base64.URLEncoding.EncodeToString(token),
-		ExpiresAt: time.Now().Add(15 * time.Minute),
-	}, nil
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtKey)
 }
 
-func ValidateLoginLink(token string) bool {
-	// Implementeer de logica om de token te valideren en te controleren of deze nog geldig is
-	// Dit zal waarschijnlijk een database-lookup vereisen
-	return false
-}
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
-
-func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+func ValidateToken(tokenStr string) (*Claims, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil || !token.Valid {
+		return nil, err
+	}
+	return claims, nil
 }
