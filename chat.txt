@@ -24,3 +24,8 @@ Qua applicatie: ik wil graag een applicatie in GO hebben, met CHI als webapplica
 
 Qua authenticatie: ik wil dat studenten in kunnen loggen met email. Dwz: via een link op hun studentenemail kan ze naar het login systeem brengen. Dit kan ook gedaan worden door de website te bezoeken vanuit een andere computer dan waarop de website zich bevindt.
 Voor docenten wil ik graag username en password hebben
+
+===
+
+De routes staan in internal/routes/routes.go
+

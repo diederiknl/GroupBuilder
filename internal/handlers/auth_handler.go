@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/GroupBuilder/internal/auth"
-	"github.com/GroupBuilder/internal/database"
+	"GroupBuilder/internal/auth"
+	"GroupBuilder/internal/database"
 )
 
 func SendLoginLink(db *database.DB) http.HandlerFunc {
