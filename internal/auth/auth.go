@@ -1,12 +1,26 @@
 package auth
 
 import (
+	"crypto/rand"
+	"encoding/hex"
+	"log"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var jwtKey = []byte("your_secret_key")
+var jwtKey []byte
+
+func init() {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		log.Println("WARNING: JWT_SECRET not set, using a default dev secret. Do not use in production!")
+		jwtKey = []byte("default_dev_secret_please_change")
+	} else {
+		jwtKey = []byte(secret)
+	}
+}
 
 type Claims struct {
 	Email string `json:"email"`
@@ -36,4 +50,13 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	token := hex.EncodeToString(b)
+	return "http://localhost:8080/auth/student/verify?token=" + token, nil
 }
