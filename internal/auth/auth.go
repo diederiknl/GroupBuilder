@@ -1,12 +1,23 @@
 package auth
 
 import (
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
 var jwtKey = []byte("your_secret_key")
+
+func init() {
+	secret := os.Getenv("JWT_SECRET")
+	if secret != "" {
+		jwtKey = []byte(secret)
+	} else {
+		fmt.Println("WARNING: JWT_SECRET not set, using default development key")
+	}
+}
 
 type Claims struct {
 	Email string `json:"email"`
