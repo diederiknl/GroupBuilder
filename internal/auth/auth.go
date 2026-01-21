@@ -39,6 +39,12 @@ func GenerateToken(email string, role string) (string, error) {
 	return token.SignedString(jwtKey)
 }
 
+func GenerateLoginLink(email string) (string, error) {
+	// TODO: Implement actual logic. For now, just return a dummy link.
+	// In production, this should generate a secure token and append it to the link.
+	return fmt.Sprintf("%s/login?email=%s", os.Getenv("BASE_URL"), email), nil
+}
+
 func ValidateToken(tokenStr string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
