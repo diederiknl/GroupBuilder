@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
@@ -16,10 +15,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer func(db *sql.DB) {
+	defer func(db *database.DB) {
 		err := db.Close()
 		if err != nil {
-
+			log.Printf("Error closing database: %v", err)
 		}
 	}(db)
 

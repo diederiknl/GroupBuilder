@@ -25,6 +25,8 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
+		// For now, avoiding unused variable error by logging or using it in response (in dev mode)
+		_ = link
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
