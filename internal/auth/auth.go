@@ -51,3 +51,14 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+// GenerateLoginLink generates a magic login link for students
+func GenerateLoginLink(email string) (string, error) {
+	// For now, this just generates a token. In a real app, this would be part of a URL.
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+	// TODO: Construct full URL with token
+	return token, nil
+}
