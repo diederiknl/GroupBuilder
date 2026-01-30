@@ -6,8 +6,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func InitDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./groupbuilder.db")
+type DB struct {
+	*sql.DB
+}
+
+func InitDB(dataSourceName string) (*DB, error) {
+	db, err := sql.Open("sqlite3", dataSourceName)
 	if err != nil {
 		return nil, err
 	}
@@ -101,5 +105,5 @@ CREATE TABLE IF NOT EXISTS teacher_pins (
 		return nil, err
 	}
 
-	return db, nil
+	return &DB{db}, nil
 }
