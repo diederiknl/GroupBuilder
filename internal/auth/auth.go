@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -36,4 +37,14 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+// GenerateLoginLink generates a login link for the given email.
+// This is a stub implementation.
+func GenerateLoginLink(email string) (string, error) {
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("http://localhost:8080/login?token=%s", token), nil
 }
