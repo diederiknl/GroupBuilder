@@ -1,12 +1,28 @@
 package auth
 
 import (
+	"log"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var jwtKey = []byte("your_secret_key")
+var jwtKey = getJWTKey()
+
+func getJWTKey() []byte {
+	key := os.Getenv("JWT_SECRET")
+	if key == "" {
+		return []byte("development_secret_key_change_me")
+	}
+	return []byte(key)
+}
+
+func init() {
+	if os.Getenv("JWT_SECRET") == "" {
+		log.Println("WARNING: JWT_SECRET not set, using default development key.")
+	}
+}
 
 type Claims struct {
 	Email string `json:"email"`
@@ -25,6 +41,20 @@ func GenerateToken(email string, role string) (string, error) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtKey)
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+
+	return baseURL + "/auth/student/verify?token=" + token, nil
 }
 
 func ValidateToken(tokenStr string) (*Claims, error) {
