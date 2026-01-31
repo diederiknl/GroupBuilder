@@ -2,13 +2,58 @@ package handlers
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/models"
+
+	"github.com/go-chi/chi/v5"
 )
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode([]models.Student{})
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		// TODO: Implement
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"id": id})
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		// TODO: Implement
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"id": id, "status": "updated"})
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		// TODO: Implement
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"id": id, "status": "deleted"})
+	}
+}
 
 func ImportStudentList(db *database.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

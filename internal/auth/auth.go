@@ -43,6 +43,20 @@ func GenerateToken(email string, role string) (string, error) {
 	return token.SignedString(jwtKey)
 }
 
+func GenerateLoginLink(email string) (string, error) {
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+
+	return baseURL + "/auth/student/verify?token=" + token, nil
+}
+
 func ValidateToken(tokenStr string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
