@@ -1,6 +1,9 @@
 package auth
 
 import (
+	"crypto/rand"
+	"encoding/base64"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -50,4 +53,21 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+// GenerateLoginLink generates a secure random token for a login link
+func GenerateLoginLink(email string) (string, error) {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+	token := base64.URLEncoding.EncodeToString(b)
+
+	// In a real app, you'd constructing a full URL here, e.g.:
+	// baseURL := os.Getenv("BASE_URL")
+	// return fmt.Sprintf("%s/auth/verify?token=%s&email=%s", baseURL, token, email), nil
+
+	// For now, returning just the token string or a dummy link format
+	return fmt.Sprintf("http://localhost:8080/auth/verify?token=%s", token), nil
 }
