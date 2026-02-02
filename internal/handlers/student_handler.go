@@ -52,6 +52,41 @@ func ImportStudentList(db *database.DB) http.HandlerFunc {
 	}
 }
 
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
 func processCSV(file io.Reader) ([]models.Student, error) {
 	reader := csv.NewReader(file)
 	var students []models.Student
