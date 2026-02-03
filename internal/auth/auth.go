@@ -1,12 +1,24 @@
 package auth
 
 import (
+	"log"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var jwtKey = []byte("your_secret_key")
+var jwtKey []byte
+
+func init() {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		log.Println("WARNING: JWT_SECRET environment variable is not set. Using default development key.")
+		jwtKey = []byte("dev-secret-key")
+	} else {
+		jwtKey = []byte(secret)
+	}
+}
 
 type Claims struct {
 	Email string `json:"email"`
@@ -36,4 +48,15 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	// For now, this just generates a token.
+	// In a real app, this might generate a unique link with a temporary token
+	token, err := GenerateToken(email, "student_login_pending")
+	if err != nil {
+		return "", err
+	}
+	// Assuming the link structure, this might need to be adjusted based on frontend/requirements
+	return "http://localhost:8080/login?token=" + token, nil
 }
