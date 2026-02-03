@@ -49,3 +49,14 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+func GenerateLoginLink(email string) (string, error) {
+	// For now, this just generates a token.
+	// In a real app, this might generate a unique link with a temporary token
+	token, err := GenerateToken(email, "student_login_pending")
+	if err != nil {
+		return "", err
+	}
+	// Assuming the link structure, this might need to be adjusted based on frontend/requirements
+	return "http://localhost:8080/login?token=" + token, nil
+}
