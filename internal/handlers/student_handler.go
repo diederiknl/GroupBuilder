@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -91,11 +92,11 @@ func saveStudents(db *database.DB, students []models.Student) error {
 
 	for _, student := range students {
 		_, err := tx.Exec(`
-            INSERT INTO students (email, name, class)
-            VALUES (?, ?, ?)
+            INSERT INTO students (email, name, class_id)
+            VALUES (?, ?, (SELECT id FROM classes WHERE name = ?))
             ON CONFLICT(email) DO UPDATE SET
                 name = excluded.name,
-                class = excluded.class
+                class_id = excluded.class_id
         `, student.Email, student.Name, student.Class)
 		if err != nil {
 			return err
@@ -103,4 +104,37 @@ func saveStudents(db *database.DB, students []models.Student) error {
 	}
 
 	return tx.Commit()
+}
+
+// Stubs for other student handlers
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode([]models.Student{})
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
 }
