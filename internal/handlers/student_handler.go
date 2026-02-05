@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -52,6 +53,38 @@ func ImportStudentList(db *database.DB) http.HandlerFunc {
 	}
 }
 
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode([]models.Student{})
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(models.Student{})
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
 func processCSV(file io.Reader) ([]models.Student, error) {
 	reader := csv.NewReader(file)
 	var students []models.Student
@@ -90,15 +123,31 @@ func saveStudents(db *database.DB, students []models.Student) error {
 	defer tx.Rollback()
 
 	for _, student := range students {
-		_, err := tx.Exec(`
-            INSERT INTO students (email, name, class)
+		// First, ensure the class exists and get its ID
+		var classID int64
+		err := tx.QueryRow("SELECT id FROM classes WHERE name = ?", student.Class).Scan(&classID)
+		if err != nil {
+			// If class doesn't exist, create it
+			result, err := tx.Exec("INSERT INTO classes (name) VALUES (?)", student.Class)
+			if err != nil {
+				return fmt.Errorf("failed to create class %s: %v", student.Class, err)
+			}
+			classID, err = result.LastInsertId()
+			if err != nil {
+				return err
+			}
+		}
+
+		// Now insert/update the student
+		_, err = tx.Exec(`
+            INSERT INTO students (email, name, class_id)
             VALUES (?, ?, ?)
             ON CONFLICT(email) DO UPDATE SET
                 name = excluded.name,
-                class = excluded.class
-        `, student.Email, student.Name, student.Class)
+                class_id = excluded.class_id
+        `, student.Email, student.Name, classID)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to save student %s: %v", student.Email, err)
 		}
 	}
 
