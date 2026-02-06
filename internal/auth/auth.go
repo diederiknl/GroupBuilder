@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -46,4 +47,18 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	token, err := GenerateToken(email, "student_login")
+	if err != nil {
+		return "", err
+	}
+
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+
+	return fmt.Sprintf("%s/login/verify?token=%s", baseURL, token), nil
 }
