@@ -1,12 +1,19 @@
 package auth
 
 import (
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var jwtKey = []byte("your_secret_key")
+func getJwtKey() []byte {
+	key := os.Getenv("JWT_SECRET")
+	if key == "" {
+		return []byte("your_secret_key")
+	}
+	return []byte(key)
+}
 
 type Claims struct {
 	Email string `json:"email"`
@@ -24,13 +31,13 @@ func GenerateToken(email string, role string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtKey)
+	return token.SignedString(getJwtKey())
 }
 
 func ValidateToken(tokenStr string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		return getJwtKey(), nil
 	})
 	if err != nil || !token.Valid {
 		return nil, err
