@@ -25,9 +25,12 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
-
+		// For now, we'll return it in the response for testing purposes (in a real app, don't do this!)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Login link sent",
+			"link":    link,
+		})
 	}
 }
 
@@ -47,5 +50,29 @@ func TeacherLogin(db *database.DB) http.HandlerFunc {
 		// If login successful, generate and return a JWT token
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		tokenStr := r.URL.Query().Get("token")
+		if tokenStr == "" {
+			http.Error(w, "Missing token", http.StatusBadRequest)
+			return
+		}
+
+		claims, err := auth.ValidateToken(tokenStr)
+		if err != nil {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		// In a real app, you might want to exchange this for a session token or set a cookie
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"message": "Login successful",
+			"email":   claims.Email,
+			"role":    claims.Role,
+		})
 	}
 }

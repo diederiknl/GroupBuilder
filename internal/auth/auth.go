@@ -44,3 +44,17 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+// GenerateLoginLink generates a link (or just a token for now) for student login.
+// In a real app, this would generate a unique token, store it, and return a link.
+// For this fix, we'll return a dummy link.
+func GenerateLoginLink(email string) (string, error) {
+	// Reusing GenerateToken for simplicity in this hotfix context,
+	// though typically this would be a one-time use token.
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+	// Assuming a frontend route or API endpoint verification
+	return "http://localhost:8080/auth/student/verify?token=" + token, nil
+}
