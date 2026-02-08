@@ -39,12 +39,4 @@ func TestMissingJWTSecret(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected error when JWT_SECRET is not set, got nil")
 	}
-
-	// Also test ValidateToken
-	// We pass a dummy token string because we expect it to fail on key retrieval before parsing fully or during verification
-	// Actually, if the token is invalid format, ParseWithClaims might return error before calling Keyfunc.
-	// But let's try with a dummy string.
-	// If it fails with "token contains an invalid number of segments", that's fine, but we want to verify it fails due to missing key if possible.
-	// But GenerateToken failing is enough proof that getJwtKey works.
-	// Let's stick to testing GenerateToken for missing key.
 }
