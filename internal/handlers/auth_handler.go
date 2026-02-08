@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"os"
 
 	"GroupBuilder/internal/auth"
 	"GroupBuilder/internal/database"
@@ -25,6 +27,12 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
+
+		// In development, log the link so we can test the login flow.
+		// In production, this must not be logged to prevent token leakage.
+		if os.Getenv("APP_ENV") == "development" {
+			log.Printf("Login link for %s: %s", req.Email, link)
+		}
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
