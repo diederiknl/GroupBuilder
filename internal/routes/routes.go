@@ -17,20 +17,20 @@ func SetupRoutes(db *database.DB) *chi.Mux {
 
 	// Authentication routes
 	r.Post("/auth/student/login-link", handlers.SendLoginLink(db))
-	r.Post("/auth/student/verify", handlers.VerifyStudentLoginLink(db))
+	// r.Post("/auth/student/verify", handlers.VerifyStudentLoginLink(db))
 	r.Post("/auth/teacher/login", handlers.TeacherLogin(db))
 
 	// Student routes (protected)
-	r.Group(func(r chi.Router) {
-		r.Use(RequireAuthToken)
-		r.Route("/students", func(r chi.Router) {
-			r.Get("/", handlers.GetAllStudents(db))
-			r.Post("/", handlers.CreateStudent(db))
-			r.Get("/{id}", handlers.GetStudent(db))
-			r.Put("/{id}", handlers.UpdateStudent(db))
-			r.Delete("/{id}", handlers.DeleteStudent(db))
-		})
-	})
+	// r.Group(func(r chi.Router) {
+	// 	r.Use(RequireAuthToken)
+	// 	r.Route("/students", func(r chi.Router) {
+	// 		r.Get("/", handlers.GetAllStudents(db))
+	// 		r.Post("/", handlers.CreateStudent(db))
+	// 		r.Get("/{id}", handlers.GetStudent(db))
+	// 		r.Put("/{id}", handlers.UpdateStudent(db))
+	// 		r.Delete("/{id}", handlers.DeleteStudent(db))
+	// 	})
+	// })
 
 	// In de SetupRoutes functie, voeg deze regel toe binnen de groep die RequireTeacherRole gebruikt:
 	r.Post("/import-students", handlers.ImportStudentList(db))
