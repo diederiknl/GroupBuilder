@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"time"
@@ -48,4 +50,19 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	// Generate a random token
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	token := hex.EncodeToString(b)
+
+	// In a real application, you would save this token to the database
+	// associated with the email and an expiration time.
+	// Then return a link like "https://example.com/verify?token=" + token
+
+	return "http://localhost:8080/auth/verify?token=" + token, nil
 }
