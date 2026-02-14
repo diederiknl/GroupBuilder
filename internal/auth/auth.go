@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"time"
 
@@ -49,4 +50,22 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+// GenerateLoginLink creates a magic link for student login
+// This is a placeholder implementation that returns a token-based URL
+func GenerateLoginLink(email string) (string, error) {
+	// For now, we reuse GenerateToken to create a token
+	// In a real app, this might be a different type of token or process
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+
+	// Construct the link (assuming some base URL)
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+	return fmt.Sprintf("%s/login/verify?token=%s", baseURL, token), nil
 }
