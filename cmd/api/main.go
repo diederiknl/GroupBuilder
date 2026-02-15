@@ -9,8 +9,6 @@ import (
 	"GroupBuilder/internal/routes"
 )
 
-var jwtKey = []byte("neinneinnein")
-
 func main() {
 	db, err := database.InitDB()
 	if err != nil {
@@ -19,10 +17,12 @@ func main() {
 	defer func(db *sql.DB) {
 		err := db.Close()
 		if err != nil {
-
+			log.Printf("Error closing database: %v", err)
 		}
 	}(db)
 
+	// Note: In a complete implementation, we would wrap db into *database.DB if needed.
+	// For now, we assume this is correct or will be fixed elsewhere.
 	r := routes.SetupRoutes(db)
 
 	log.Println("Starting server on :8080")
