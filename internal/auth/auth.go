@@ -50,3 +50,10 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+// GenerateLoginLink generates a token for student login
+func GenerateLoginLink(email string) (string, error) {
+	// For now, we reuse GenerateToken with "student" role for login link
+	// In a real app, this might be a short-lived token just for login verification
+	return GenerateToken(email, "student")
+}

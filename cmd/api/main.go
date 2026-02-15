@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
@@ -14,15 +13,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer func(db *sql.DB) {
+	defer func(db *database.DB) {
 		err := db.Close()
 		if err != nil {
 			log.Printf("Error closing database: %v", err)
 		}
 	}(db)
 
-	// Note: In a complete implementation, we would wrap db into *database.DB if needed.
-	// For now, we assume this is correct or will be fixed elsewhere.
 	r := routes.SetupRoutes(db)
 
 	log.Println("Starting server on :8080")
