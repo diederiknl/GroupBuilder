@@ -10,6 +10,48 @@ import (
 	"GroupBuilder/internal/models"
 )
 
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Not implemented"))
+	}
+}
+
 func ImportStudentList(db *database.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the multipart form
@@ -91,11 +133,11 @@ func saveStudents(db *database.DB, students []models.Student) error {
 
 	for _, student := range students {
 		_, err := tx.Exec(`
-            INSERT INTO students (email, name, class)
+            INSERT INTO students (email, name, class_id)
             VALUES (?, ?, ?)
             ON CONFLICT(email) DO UPDATE SET
                 name = excluded.name,
-                class = excluded.class
+                class_id = excluded.class_id
         `, student.Email, student.Name, student.Class)
 		if err != nil {
 			return err

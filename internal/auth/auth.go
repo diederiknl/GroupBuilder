@@ -1,7 +1,10 @@
 package auth
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"os"
 	"time"
 
@@ -49,4 +52,20 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+func GenerateLoginLink(email string) (string, error) {
+	// For now, we generate a random token. In a real app, this would be stored in the DB.
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	token := hex.EncodeToString(b)
+
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+
+	return fmt.Sprintf("%s/login?token=%s&email=%s", baseURL, token, email), nil
 }
