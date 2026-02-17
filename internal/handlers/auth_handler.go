@@ -25,9 +25,19 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
+		// For now, we print it to the console for development purposes
+		println(link)
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement student login link verification
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
 	}
 }
 

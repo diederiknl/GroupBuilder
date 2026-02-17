@@ -2,13 +2,58 @@ package handlers
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/models"
+
+	"github.com/go-chi/chi/v5"
 )
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement getting all students
+		json.NewEncoder(w).Encode([]models.Student{})
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement creating a student
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idStr := chi.URLParam(r, "id")
+		_, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			http.Error(w, "Invalid student ID", http.StatusBadRequest)
+			return
+		}
+		// TODO: Implement getting a student by ID
+		json.NewEncoder(w).Encode(models.Student{})
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement updating a student
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement deleting a student
+		w.WriteHeader(http.StatusOK)
+	}
+}
 
 func ImportStudentList(db *database.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
