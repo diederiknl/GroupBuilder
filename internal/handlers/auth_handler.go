@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"GroupBuilder/internal/auth"
 	"GroupBuilder/internal/database"
@@ -24,10 +26,36 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 			return
 		}
 
+		// Log the link if in development
+		if os.Getenv("APP_ENV") == "development" {
+			fmt.Println("Login Link:", link)
+		}
+
 		// TODO: Save the link to the database and send email
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req struct {
+			Token string `json:"token"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		claims, err := auth.ValidateToken(req.Token)
+		if err != nil {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]interface{}{"message": "Login successful", "email": claims.Email})
 	}
 }
 
