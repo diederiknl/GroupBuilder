@@ -91,16 +91,47 @@ func saveStudents(db *database.DB, students []models.Student) error {
 
 	for _, student := range students {
 		_, err := tx.Exec(`
-            INSERT INTO students (email, name, class)
-            VALUES (?, ?, ?)
+            INSERT INTO students (email, name, class_id)
+            VALUES (?, ?, (SELECT id FROM classes WHERE name = ?))
             ON CONFLICT(email) DO UPDATE SET
                 name = excluded.name,
-                class = excluded.class
+                class_id = excluded.class_id
         `, student.Email, student.Name, student.Class)
 		if err != nil {
+			// Handle case where class might not exist, but for now just error
 			return err
 		}
 	}
 
 	return tx.Commit()
+}
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	}
 }
