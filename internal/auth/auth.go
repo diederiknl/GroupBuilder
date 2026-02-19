@@ -1,12 +1,12 @@
 package auth
 
 import (
+	"errors"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
-
-var jwtKey = []byte("your_secret_key")
 
 type Claims struct {
 	Email string `json:"email"`
@@ -14,7 +14,20 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
+func getJwtKey() ([]byte, error) {
+	key := os.Getenv("JWT_SECRET")
+	if key == "" {
+		return nil, errors.New("JWT_SECRET environment variable not set")
+	}
+	return []byte(key), nil
+}
+
 func GenerateToken(email string, role string) (string, error) {
+	jwtKey, err := getJwtKey()
+	if err != nil {
+		return "", err
+	}
+
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		Email: email,
@@ -30,7 +43,7 @@ func GenerateToken(email string, role string) (string, error) {
 func ValidateToken(tokenStr string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		return getJwtKey()
 	})
 	if err != nil || !token.Valid {
 		return nil, err

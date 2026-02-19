@@ -9,8 +9,6 @@ import (
 	"GroupBuilder/internal/routes"
 )
 
-var jwtKey = []byte("neinneinnein")
-
 func main() {
 	db, err := database.InitDB()
 	if err != nil {
