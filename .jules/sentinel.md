@@ -1,5 +1,11 @@
-## 2024-05-23 - Hardcoded Secrets in Go
+## 2026-02-19 - CI Failure: Undefined Types in Handlers
 
-**Vulnerability:** Found hardcoded JWT secrets in both `cmd/api/main.go` (unused) and `internal/auth/auth.go` (active).
-**Learning:** Hardcoded secrets often propagate through copy-pasting or incomplete refactors. Multiple instances can exist, with some being unused decoys.
-**Prevention:** Use environment variables for all secrets. Scan codebase for secret patterns (e.g., "secret", "key", "token") during code reviews or CI.
+**Vulnerability:** CI failed due to `undefined: models.Student` and `undefined: database.DB` errors in handlers.
+**Learning:**
+1.  **Missing Type Definitions:** The `Student` struct was used in `student_handler.go` but was missing from `internal/models/student.go`.
+2.  **Type Mismatches:** `database.InitDB` returned `*sql.DB`, but handlers expected `*database.DB`. This mismatch broke the build.
+3.  **Dependencies:** Handlers like `VerifyStudentLoginLink` were referenced in `routes.go` but not implemented in `auth_handler.go`.
+**Prevention:**
+1.  Always run `go build ./...` locally before pushing to catch compilation errors.
+2.  Ensure type definitions in `models` match usage in `handlers`.
+3.  Check function signatures (return types) when refactoring database initialization code.

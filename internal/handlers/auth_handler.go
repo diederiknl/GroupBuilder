@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"GroupBuilder/internal/auth"
 	"GroupBuilder/internal/database"
@@ -26,8 +28,21 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 
 		// TODO: Save the link to the database and send email
 
+		// For now, in development, we can print it or return it
+		if os.Getenv("APP_ENV") == "development" {
+			fmt.Println("Login Link:", link)
+		}
+
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement verification
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
 	}
 }
 
