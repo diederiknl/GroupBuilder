@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
@@ -9,19 +8,12 @@ import (
 	"GroupBuilder/internal/routes"
 )
 
-var jwtKey = []byte("neinneinnein")
-
 func main() {
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-
-		}
-	}(db)
+	defer db.Close()
 
 	r := routes.SetupRoutes(db)
 
