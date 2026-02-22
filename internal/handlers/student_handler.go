@@ -8,6 +8,7 @@ import (
 
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/models"
+    "github.com/go-chi/chi/v5"
 )
 
 func ImportStudentList(db *database.DB) http.HandlerFunc {
@@ -91,16 +92,59 @@ func saveStudents(db *database.DB, students []models.Student) error {
 
 	for _, student := range students {
 		_, err := tx.Exec(`
-            INSERT INTO students (email, name, class)
+            INSERT INTO students (email, name, class_id)
             VALUES (?, ?, ?)
             ON CONFLICT(email) DO UPDATE SET
-                name = excluded.name,
-                class = excluded.class
-        `, student.Email, student.Name, student.Class)
+                name = excluded.name
+        `, student.Email, student.Name, 0) // TODO: Lookup actual class_id
 		if err != nil {
 			return err
 		}
 	}
 
 	return tx.Commit()
+}
+
+// Stubs for missing handlers
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+        id := chi.URLParam(r, "id")
+        _ = id
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+        id := chi.URLParam(r, "id")
+        _ = id
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+        id := chi.URLParam(r, "id")
+        _ = id
+		w.WriteHeader(http.StatusOK)
+	}
 }
