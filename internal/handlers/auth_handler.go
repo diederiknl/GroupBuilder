@@ -25,9 +25,16 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
+		_ = link
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not Implemented", http.StatusNotImplemented)
 	}
 }
 
