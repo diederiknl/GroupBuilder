@@ -1,14 +1,14 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 
 	"GroupBuilder/internal/auth"
-	"GroupBuilder/internal/database"
 )
 
-func SendLoginLink(db *database.DB) http.HandlerFunc {
+func SendLoginLink(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req struct {
 			Email string `json:"email"`
@@ -18,20 +18,20 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 			return
 		}
 
-		link, err := auth.GenerateLoginLink(req.Email)
+		// We ignore the link for now as we don't have email sending implemented
+		// In a real implementation, we would send this link via email
+		_, err := auth.GenerateLoginLink(req.Email)
 		if err != nil {
 			http.Error(w, "Failed to generate login link", http.StatusInternalServerError)
 			return
 		}
-
-		// TODO: Save the link to the database and send email
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
 	}
 }
 
-func TeacherLogin(db *database.DB) http.HandlerFunc {
+func TeacherLogin(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req struct {
 			Username string `json:"username"`
@@ -47,5 +47,11 @@ func TeacherLogin(db *database.DB) http.HandlerFunc {
 		// If login successful, generate and return a JWT token
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
+	}
+}
+
+func VerifyStudentLoginLink(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
 	}
 }

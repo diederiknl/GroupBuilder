@@ -1,14 +1,16 @@
 package routes
 
 import (
-	"GroupBuilder/internal/database"
+	"database/sql"
+	"net/http"
+
 	"GroupBuilder/internal/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func SetupRoutes(db *database.DB) *chi.Mux {
+func SetupRoutes(db *sql.DB) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -37,4 +39,11 @@ func SetupRoutes(db *database.DB) *chi.Mux {
 	// Add other routes here...
 
 	return r
+}
+
+func RequireAuthToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// TODO: Implement authentication check
+		next.ServeHTTP(w, r)
+	})
 }

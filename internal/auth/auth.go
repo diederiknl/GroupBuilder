@@ -50,3 +50,8 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+func GenerateLoginLink(email string) (string, error) {
+	// TODO: Implement actual login link generation
+	return "http://localhost:8080/auth/student/verify?token=dummy", nil
+}

@@ -1,16 +1,16 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"io"
 	"net/http"
 
-	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/models"
 )
 
-func ImportStudentList(db *database.DB) http.HandlerFunc {
+func ImportStudentList(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the multipart form
 		err := r.ParseMultipartForm(10 << 20) // 10 MB max
@@ -81,7 +81,7 @@ func processCSV(file io.Reader) ([]models.Student, error) {
 	return students, nil
 }
 
-func saveStudents(db *database.DB, students []models.Student) error {
+func saveStudents(db *sql.DB, students []models.Student) error {
 	// Start a transaction
 	tx, err := db.Begin()
 	if err != nil {
@@ -103,4 +103,15 @@ func saveStudents(db *database.DB, students []models.Student) error {
 	}
 
 	return tx.Commit()
+}
+
+// Helper stubs to fix build for now - should be implemented properly
+func GetAllStudents(db *sql.DB) http.HandlerFunc { return notImplemented }
+func CreateStudent(db *sql.DB) http.HandlerFunc  { return notImplemented }
+func GetStudent(db *sql.DB) http.HandlerFunc     { return notImplemented }
+func UpdateStudent(db *sql.DB) http.HandlerFunc  { return notImplemented }
+func DeleteStudent(db *sql.DB) http.HandlerFunc  { return notImplemented }
+
+func notImplemented(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
 }
