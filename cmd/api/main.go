@@ -4,14 +4,17 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/routes"
 )
 
-var jwtKey = []byte("neinneinnein")
-
 func main() {
+	if os.Getenv("JWT_SECRET") == "" {
+		log.Fatal("JWT_SECRET environment variable not set")
+	}
+
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
