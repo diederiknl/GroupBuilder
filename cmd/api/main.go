@@ -1,25 +1,27 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/routes"
 )
 
-var jwtKey = []byte("neinneinnein")
-
 func main() {
+	if os.Getenv("JWT_SECRET") == "" {
+		log.Fatal("JWT_SECRET environment variable is not set")
+	}
+
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer func(db *sql.DB) {
+	defer func(db *database.DB) {
 		err := db.Close()
 		if err != nil {
-
+			log.Printf("Error closing database: %v", err)
 		}
 	}(db)
 

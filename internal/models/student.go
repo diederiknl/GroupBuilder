@@ -2,6 +2,16 @@ package models
 
 import "time"
 
+type Student struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Class     string    `json:"class"`
+	GroupID   *int64    `json:"group_id,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type StudentLoginToken struct {
 	ID        int64     `json:"id"`
 	StudentID int64     `json:"student_id"`

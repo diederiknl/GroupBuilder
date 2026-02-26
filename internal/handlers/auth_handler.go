@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"GroupBuilder/internal/auth"
@@ -25,6 +26,7 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		}
 
 		// TODO: Save the link to the database and send email
+		log.Printf("Generated login link for %s: %s", req.Email, link)
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
