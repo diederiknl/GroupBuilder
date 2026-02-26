@@ -6,11 +6,17 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func InitDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./groupbuilder.db")
+type DB struct {
+	*sql.DB
+}
+
+func InitDB() (*DB, error) {
+	sqlDB, err := sql.Open("sqlite3", "./groupbuilder.db")
 	if err != nil {
 		return nil, err
 	}
+
+	db := &DB{sqlDB}
 
 	// Create tables if they don't exist
 	_, err = db.Exec(`-- Projects table
