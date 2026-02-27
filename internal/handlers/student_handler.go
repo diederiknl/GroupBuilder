@@ -70,6 +70,10 @@ func processCSV(file io.Reader) ([]models.Student, error) {
 			return nil, err
 		}
 
+		if len(record) < 3 {
+			return nil, fmt.Errorf("malformed CSV: record has %d fields, expected at least 3", len(record))
+		}
+
 		student := models.Student{
 			Email: record[0],
 			Name:  record[1],

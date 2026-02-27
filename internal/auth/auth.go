@@ -37,3 +37,8 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+func GenerateLoginLink(email string) (string, error) {
+	// TODO: Use a proper base URL from configuration
+	return "/auth/student/verify?token=dummy", nil
+}
