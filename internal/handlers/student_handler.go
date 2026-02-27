@@ -70,6 +70,10 @@ func processCSV(file io.Reader) ([]models.Student, error) {
 			return nil, err
 		}
 
+		if len(record) < 3 {
+			return nil, fmt.Errorf("malformed CSV: record has %d fields, expected at least 3", len(record))
+		}
+
 		student := models.Student{
 			Email: record[0],
 			Name:  record[1],
@@ -103,4 +107,41 @@ func saveStudents(db *database.DB, students []models.Student) error {
 	}
 
 	return tx.Commit()
+}
+
+// Stub handlers for missing functions
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
+}
+
+func GetAllStudents(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
+}
+
+func CreateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
+}
+
+func GetStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
+}
+
+func UpdateStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
+}
+
+func DeleteStudent(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not implemented", http.StatusNotImplemented)
+	}
 }
