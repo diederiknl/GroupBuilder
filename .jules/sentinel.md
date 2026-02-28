@@ -1,0 +1,4 @@
+## 2024-05-24 - Hardcoded JWT Secret Key Removed
+**Vulnerability:** A hardcoded `jwtKey` variable containing `"your_secret_key"` was found in `internal/auth/auth.go` (and an unused duplicate `"neinneinnein"` in `cmd/api/main.go`).
+**Learning:** Hardcoded secrets present a critical security vulnerability. An attacker with access to the codebase would have the key needed to forge arbitrary JWT tokens, bypassing authentication controls entirely and allowing full unauthorized access to user and administrative capabilities.
+**Prevention:** Remove hardcoded secrets from code and source control. Use environment variables (e.g., `JWT_SECRET`) instead, requiring them to be set at application startup. Ensure early validation that secrets are present before running the application (e.g., in `main()`).
