@@ -7,8 +7,17 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+var jwtKey []byte
+
+func InitKey() {
+	jwtKey = []byte(os.Getenv("JWT_SECRET"))
+}
+
 func getJwtKey() []byte {
-	return []byte(os.Getenv("JWT_SECRET"))
+	if len(jwtKey) == 0 {
+		InitKey()
+	}
+	return jwtKey
 }
 
 type Claims struct {
@@ -39,4 +48,12 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	return claims, nil
+}
+
+// GenerateLoginLink generates a relative login link for a student
+func GenerateLoginLink(email string) (string, error) {
+	// In a real application, you would create a secure, randomly generated token,
+	// save it to the database with an expiration time, and construct a link.
+	// For now, we'll return a stub link.
+	return "/auth/student/login?token=stub_token_for_" + email, nil
 }

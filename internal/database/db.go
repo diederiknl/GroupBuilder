@@ -6,6 +6,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type DB = sql.DB
+
 func InitDB() (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", "./groupbuilder.db")
 	if err != nil {
