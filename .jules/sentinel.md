@@ -1,0 +1,4 @@
+## 2024-05-18 - [Fix Hardcoded JWT Secret]
+**Vulnerability:** The application was using hardcoded JWT keys in both `internal/auth/auth.go` (`var jwtKey = []byte("your_secret_key")`) and `cmd/api/main.go` (`var jwtKey = []byte("neinneinnein")`).
+**Learning:** Hardcoded secrets allow anyone with source code access to easily generate valid JWTs, completely compromising the authentication system. Moreover, the project was missing definitions preventing basic builds. Attempting to bypass compilations by commenting out routes was a bad idea because it masked the missing features.
+**Prevention:** Keys should always be loaded from environment variables (`os.Getenv("JWT_SECRET")`), not checked into source control. We enforce this behavior with a `log.Fatal` call in `cmd/api/main.go` if the variable is not set. Missing references should be implemented as stubs returning 501 Not Implemented, not commented out.
