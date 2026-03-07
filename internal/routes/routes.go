@@ -32,9 +32,13 @@ func SetupRoutes(db *database.DB) *chi.Mux {
 		})
 	})
 
-	// In de SetupRoutes functie, voeg deze regel toe binnen de groep die RequireTeacherRole gebruikt:
-	r.Post("/import-students", handlers.ImportStudentList(db))
-	// Add other routes here...
+	// Teacher routes (protected)
+	r.Group(func(r chi.Router) {
+		// TODO: Implement RequireTeacherRole middleware. For now using RequireAuthToken to prevent public access.
+		r.Use(RequireAuthToken)
+		// In de SetupRoutes functie, voeg deze regel toe binnen de groep die RequireTeacherRole gebruikt:
+		r.Post("/import-students", handlers.ImportStudentList(db))
+	})
 
 	return r
 }
