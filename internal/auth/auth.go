@@ -37,3 +37,15 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+func GenerateLoginLink(email string) (string, error) {
+	// Generate token for student role
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+
+	// Create login link using the token
+	link := "/auth/student/verify?token=" + token
+	return link, nil
+}

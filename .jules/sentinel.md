@@ -1,0 +1,4 @@
+## 2024-03-07 - Fixed Missing Authentication/Authorization on Import Students Endpoint
+**Vulnerability:** The `/import-students` endpoint was entirely unprotected. The comment `// In de SetupRoutes functie, voeg deze regel toe binnen de groep die RequireTeacherRole gebruikt:` indicated it should be protected by teacher authorization, but it was just added to the root router, allowing any unauthenticated user to import CSV student lists and overwrite database records.
+**Learning:** Comments indicating intended security controls ("add this inside the protected group") are often missed or ignored during development, leading to endpoints being accidentally exposed.
+**Prevention:** Regularly audit route definitions and ensure endpoints meant to be restricted are explicitly placed within middleware groups like `RequireAuthToken` or `RequireTeacherRole`.
