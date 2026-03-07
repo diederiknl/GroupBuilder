@@ -3,6 +3,9 @@ package routes
 import (
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/handlers"
+	"GroupBuilder/internal/auth"
+	"strings"
+	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -34,11 +37,47 @@ func SetupRoutes(db *database.DB) *chi.Mux {
 
 	// Teacher routes (protected)
 	r.Group(func(r chi.Router) {
-		r.Use(RequireAuthToken) // In future, use RequireTeacherRole
-		// In de SetupRoutes functie, voeg deze regel toe binnen de groep die RequireTeacherRole gebruikt:
+		r.Use(RequireTeacherRole)
 		r.Post("/import-students", handlers.ImportStudentList(db))
 	})
-	// Add other routes here...
 
 	return r
+}
+
+func RequireTeacherRole(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			http.Error(w, "Unauthorized: missing or invalid authorization header", http.StatusUnauthorized)
+			return
+		}
+
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		claims, err := auth.ValidateToken(tokenStr)
+		if err != nil || claims == nil || claims.Role != "teacher" {
+			http.Error(w, "Forbidden: Teacher role required", http.StatusForbidden)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+func RequireAuthToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			http.Error(w, "Unauthorized: missing or invalid authorization header", http.StatusUnauthorized)
+			return
+		}
+
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		claims, err := auth.ValidateToken(tokenStr)
+		if err != nil || claims == nil {
+			http.Error(w, "Unauthorized: invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

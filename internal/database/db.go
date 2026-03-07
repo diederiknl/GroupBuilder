@@ -103,3 +103,5 @@ CREATE TABLE IF NOT EXISTS teacher_pins (
 
 	return db, nil
 }
+
+type DB = sql.DB
