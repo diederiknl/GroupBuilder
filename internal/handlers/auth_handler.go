@@ -18,7 +18,7 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 			return
 		}
 
-		link, err := auth.GenerateLoginLink(req.Email)
+		_, err := auth.GenerateLoginLink(req.Email)
 		if err != nil {
 			http.Error(w, "Failed to generate login link", http.StatusInternalServerError)
 			return
@@ -49,3 +49,5 @@ func TeacherLogin(db *database.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
 	}
 }
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }

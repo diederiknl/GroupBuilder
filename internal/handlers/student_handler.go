@@ -104,3 +104,9 @@ func saveStudents(db *database.DB, students []models.Student) error {
 
 	return tx.Commit()
 }
+
+func GetAllStudents(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }
+func CreateStudent(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }
+func GetStudent(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }
+func UpdateStudent(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }
+func DeleteStudent(db *database.DB) http.HandlerFunc { return func(w http.ResponseWriter, r *http.Request) {} }

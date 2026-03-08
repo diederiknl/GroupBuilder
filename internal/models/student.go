@@ -9,3 +9,11 @@ type StudentLoginToken struct {
 	ExpiresAt time.Time `json:"expires_at"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type Student struct {
+	ID      int64  `json:"id"`
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Class   string `json:"class"`
+	GroupID *int64 `json:"group_id,omitempty"`
+}
