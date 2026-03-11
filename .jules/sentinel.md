@@ -1,0 +1,4 @@
+## 2026-03-11 - [Hardcoded JWT Secret in Auth Package]
+**Vulnerability:** Found a hardcoded JWT signing key (`your_secret_key` and `neinneinnein`) in the `internal/auth/auth.go` and `cmd/api/main.go` files respectively.
+**Learning:** Hardcoded secrets represent a critical risk as they can easily be extracted from version control. All cryptographic keys should be injected at runtime and never committed.
+**Prevention:** Keys are now retrieved from the `JWT_SECRET` environment variable at runtime using `os.Getenv()`. The authentication functions gracefully return errors if the variable is missing. Unused hardcoded variables were removed. Unit tests were added to ensure the dependency on the environment variable works properly.
