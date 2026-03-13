@@ -55,3 +55,11 @@ func ValidateToken(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+func GenerateLoginLink(email string) (string, error) {
+	token, err := GenerateToken(email, "student")
+	if err != nil {
+		return "", err
+	}
+	return "/login?token=" + token, nil
+}
