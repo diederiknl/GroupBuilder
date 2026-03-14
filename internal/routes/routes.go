@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/handlers"
 
@@ -37,4 +39,10 @@ func SetupRoutes(db *database.DB) *chi.Mux {
 	// Add other routes here...
 
 	return r
+}
+
+func RequireAuthToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotImplemented)
+	})
 }
