@@ -27,7 +27,10 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 		// TODO: Save the link to the database and send email
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Login link sent",
+			"link":    link, // For testing purposes, we return the link
+		})
 	}
 }
 
