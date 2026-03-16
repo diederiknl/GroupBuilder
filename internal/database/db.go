@@ -6,6 +6,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// DB is a type alias for sql.DB to satisfy handlers
+type DB = sql.DB
+
 func InitDB() (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", "./groupbuilder.db")
 	if err != nil {
