@@ -9,3 +9,9 @@ type StudentLoginToken struct {
 	ExpiresAt time.Time `json:"expires_at"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type Student struct {
+	Name  string
+	Email string
+	Class string
+}
