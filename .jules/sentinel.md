@@ -1,0 +1,4 @@
+## 2024-05-18 - [Hardcoded JWT Secret in Authentication Module]
+**Vulnerability:** A critical security vulnerability was found in `internal/auth/auth.go` where the `jwtKey` was hardcoded directly in the source code as `"your_secret_key"`.
+**Learning:** Hardcoding cryptographic secrets in the codebase exposes all generated JWTs to forging if the source code is compromised, potentially leading to unauthorized access. This likely occurred due to a rapid prototyping phase where an environment-based configuration was overlooked.
+**Prevention:** All cryptographic secrets and sensitive credentials must be fetched from environment variables or a secure secret management service. Use `os.Getenv` and handle cases where the variable is unset with an error to ensure failure is secure and noticeable during startup.
