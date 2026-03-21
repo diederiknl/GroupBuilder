@@ -1,0 +1,4 @@
+## 2024-05-18 - Hardcoded JWT Secret Key Removed
+**Vulnerability:** A hardcoded `jwtKey` variable with the value `"your_secret_key"` was found directly in `internal/auth/auth.go`. This exposes the secret key to anyone who can read the source code.
+**Learning:** Hardcoding secrets like a JWT key allows attackers to forge valid authentication tokens, leading to full authentication bypass. Relying on an environment variable is more secure as its value can be easily injected at runtime and managed through secure secrets managers.
+**Prevention:** Always load secrets such as API keys, JWT signatures, and database credentials from environment variables (e.g., `os.Getenv`) or a secure key management system rather than committing them to source control. Ensure functions handling these fail closed (return an error) if the variable is missing.
