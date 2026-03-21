@@ -3,10 +3,18 @@ package routes
 import (
 	"GroupBuilder/internal/database"
 	"GroupBuilder/internal/handlers"
+	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
+
+// RequireAuthToken stub to satisfy compiler
+func RequireAuthToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	})
+}
 
 func SetupRoutes(db *database.DB) *chi.Mux {
 	r := chi.NewRouter()
