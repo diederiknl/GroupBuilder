@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"GroupBuilder/internal/auth"
 	"GroupBuilder/internal/database"
 )
 
@@ -18,11 +17,13 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 			return
 		}
 
-		link, err := auth.GenerateLoginLink(req.Email)
-		if err != nil {
-			http.Error(w, "Failed to generate login link", http.StatusInternalServerError)
-			return
-		}
+		// Since GenerateLoginLink is currently unimplemented/removed for security bounds
+		// link, err := auth.GenerateLoginLink(req.Email)
+		// if err != nil {
+		// 	http.Error(w, "Failed to generate login link", http.StatusInternalServerError)
+		// 	return
+		// }
+		// _ = link
 
 		// TODO: Save the link to the database and send email
 
@@ -47,5 +48,11 @@ func TeacherLogin(db *database.DB) http.HandlerFunc {
 		// If login successful, generate and return a JWT token
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"token": "JWT_TOKEN_HERE"})
+	}
+}
+
+func VerifyStudentLoginLink(db *database.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Not Implemented", http.StatusNotImplemented)
 	}
 }
