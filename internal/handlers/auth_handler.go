@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"GroupBuilder/internal/auth"
 	"GroupBuilder/internal/database"
 )
 
@@ -18,16 +17,8 @@ func SendLoginLink(db *database.DB) http.HandlerFunc {
 			return
 		}
 
-		link, err := auth.GenerateLoginLink(req.Email)
-		if err != nil {
-			http.Error(w, "Failed to generate login link", http.StatusInternalServerError)
-			return
-		}
-
-		// TODO: Save the link to the database and send email
-
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Login link sent"})
+		// auth.GenerateLoginLink(req.Email) should not be implemented in this targeted fix
+		http.Error(w, "Not Implemented", http.StatusNotImplemented)
 	}
 }
 
