@@ -1,0 +1,4 @@
+## 2024-05-24 - [Hardcoded JWT Secret]
+**Vulnerability:** A hardcoded secret (`your_secret_key`) was found in `internal/auth/auth.go` for signing and validating JWTs. Another hardcoded key was found in `cmd/api/main.go`.
+**Learning:** Hardcoded secrets present a critical risk. If the codebase is leaked or public, the secret is compromised, allowing attackers to forge JWTs and gain unauthorized access to any account or endpoint relying on this authentication.
+**Prevention:** All secrets must be loaded dynamically from environment variables (e.g., `os.Getenv("JWT_SECRET")`) or a secure secret management system. Never commit plaintext secrets or keys to the repository. If the secret is not provided, the application should fail securely with an appropriate error.
